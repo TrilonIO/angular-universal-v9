@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-universal-v9",
+            "outputPath": "dist/angular-universal-v9/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -116,6 +116,51 @@
             "production": {
               "devServerTarget": "angular-universal-v9:serve:production"
             }
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/angular-universal-v9/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "angular-universal-v9:build",
+            "serverTarget": "angular-universal-v9:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "angular-universal-v9:build:production",
+              "serverTarget": "angular-universal-v9:server:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "angular-universal-v9:build:production",
+            "serverTarget": "angular-universal-v9:server:production",
+            "routes": []
+          },
+          "configurations": {
+            "production": {}
           }
         }
       }
